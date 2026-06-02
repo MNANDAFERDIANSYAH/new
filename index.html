@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Smart Bakorwil | Digital Governance Platform Bojonegoro</title>
+    <meta name="description" content="Platform Digital Governance Bakorwil II Bojonegoro - Layanan surat digital, pengaduan, GIS, AI chatbot, dan informasi publik terintegrasi">
+    <meta name="author" content="Bakorwil II Bojonegoro">
+    <!-- Google Fonts + Font Awesome 6 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- AOS CSS untuk animasi scroll -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Chart.js untuk statistik -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        /* ============================================ */
+        /* RESET & VARIABLES - TEMA BIRU PUTIH ELEGAN   */
+        /* ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-deep: #0a2b4e;
+            --primary-dark: #0a3d62;
+            --primary: #1e5a88;
+            --primary-light: #3a7ca5;
+            --primary-soft: #e8f0fe;
+            --accent-gold: #c9a03d;
+            --white: #ffffff;
+            --gray-25: #fcfcfd;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+            --shadow-xs: 0 1px 2px rgba(0,0,0,0.03);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.03);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.05), 0 4px 6px -2px rgba(0,0,0,0.025);
+            --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.05), 0 10px 10px -5px rgba(0,0,0,0.01);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --radius-2xl: 32px;
+            --transition: all 0.2s ease;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--gray-50) 0%, #eef2f6 100%);
+            color: var(--gray-800);
+            overflow-x: hidden;
+        }
+
+        /* ============================================ */
+        /* LAYOUT UTAMA                                 */
+        /* ============================================ */
+        .app-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR MODERN ELEGAN */
+        .sidebar {
+            width: 280px;
+            background: var(--white);
+            border-right: 1px solid var(--gray-200);
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 40;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .sidebar.show {
+            transform: translateX(0);
+        }
+
+        .sidebar-header {
+            padding: 28px 24px;
+            border-bottom: 1px solid var(--gray-200);
+            background: linear-gradient(135deg, var(--white) 0%, var(--gray-50) 100%);
+            position: relative;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+        }
+
+        .logo-sub {
+            font-size: 0.7rem;
+            color: var(--gray-500);
+            margin-top: 6px;
+            font-weight: 500;
+        }
+
+        .nav-menu {
+            padding: 20px 14px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 18px;
+            margin: 4px 0;
+            border-radius: var(--radius-md);
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: var(--gray-700);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .nav-item i {
+            width: 24px;
+            font-size: 1.2rem;
+            color: var(--gray-500);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            color: var(--white);
+            box-shadow: 0 4px 12px rgba(10, 61, 98, 0.2);
+        }
+
+        .nav-item.active i {
+            color: var(--white);
+        }
+
+        .nav-item:hover:not(.active) {
+            background: var(--gray-100);
+            transform: translateX(4px);
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            margin-left: 280px;
+            flex: 1;
+            padding: 28px 36px;
+        }
+
+        /* TOP BAR */
+        .top-navbar {
+            background: var(--white);
+            border-radius: 60px;
+            padding: 12px 28px;
+            margin-bottom: 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+        }
+
+        .role-badge {
+            background: var(--primary-soft);
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        .btn-role-switch {
+            background: transparent;
+            border: 1.5px solid var(--gray-200);
+            padding: 8px 22px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--primary-dark);
+        }
+
+        .btn-role-switch:hover {
+            background: var(--primary-dark);
+            color: var(--white);
+            border-color: var(--primary-dark);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: transparent;
+            border: none;
+            color: var(--primary-dark);
+            font-size: 1.35rem;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 16px;
+            transition: var(--transition);
+        }
+
+        .mobile-menu-btn:hover {
+            background: var(--gray-100);
+        }
+
+        .sidebar-close {
+            display: none;
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            background: transparent;
+            border: none;
+            color: var(--gray-600);
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        /* CARD COMPONENTS */
+        .card {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            padding: 28px;
+            margin-bottom: 28px;
+            border: 1px solid var(--gray-200);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--primary-dark);
+            border-left: 4px solid var(--primary);
+            padding-left: 16px;
+        }
+
+        /* Hero Section dengan Gambar */
+        .hero-section {
+            background: linear-gradient(rgba(10, 61, 98, 0.85), rgba(10, 61, 98, 0.75)), url('image.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: var(--radius-2xl);
+            padding: 60px 40px;
+            margin-bottom: 32px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .hero-section p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            max-width: 600px;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 40px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat .number {
+            font-size: 2rem;
+            font-weight: 800;
+        }
+
+        .hero-stat .label {
+            font-size: 0.8rem;
+            opacity: 0.85;
+        }
+
+        .wilayah-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .wilayah-tag {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(4px);
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .wilayah-tag:hover {
+            background: rgba(255,255,255,0.35);
+            transform: translateY(-2px);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 28px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-bottom: 28px;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            border: 1px solid var(--gray-200);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 16px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+        }
+
+        button {
+            background: var(--primary-dark);
+            color: var(--white);
+            border: none;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        button:hover {
+            background: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px 18px;
+            border-radius: 40px;
+            border: 1px solid var(--gray-200);
+            background: var(--gray-50);
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(30, 90, 136, 0.1);
+        }
+
+        .map-container {
+            width: 100%;
+            min-height: 380px;
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            background: var(--gray-100);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .map-image {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+        .map-placeholder {
+            text-align: center;
+            color: var(--gray-500);
+        }
+
+        .map-placeholder i {
+            font-size: 4rem;
+            margin-bottom: 16px;
+            color: var(--primary);
+        }
+
+        .chat-window {
+            background: var(--gray-50);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            height: 350px;
+            overflow-y: auto;
+        }
+
+        .chat-message {
+            margin-bottom: 16px;
+            padding: 10px 16px;
+            border-radius: 20px;
+        }
+
+        .chat-bot {
+            background: var(--primary-soft);
+            color: var(--primary-dark);
+        }
+
+        .chat-user {
+            background: var(--primary-dark);
+            color: white;
+            text-align: right;
+        }
+
+        /* Footer dengan link Bakorwil */
+        footer {
+            text-align: center;
+            margin-top: 48px;
+            padding-top: 32px;
+            border-top: 1px solid var(--gray-200);
+            font-size: 0.8rem;
+            color: var(--gray-500);
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 20px;
+        }
+
+        .footer-links a {
+            color: var(--primary-dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 4px 8px;
+            border-radius: 20px;
+        }
+
+        .footer-links a:hover {
+            background: var(--primary-soft);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .footer-social {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 18px;
+            margin-bottom: 20px;
+        }
+
+        .footer-social a {
+            color: var(--primary-dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 6px 10px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-social a:hover {
+            background: var(--primary-soft);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .footer-copyright {
+            font-size: 0.7rem;
+            margin-top: 16px;
+        }
+
+        .external-link-card {
+            background: linear-gradient(135deg, var(--primary-soft) 0%, var(--white) 100%);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .x-logo {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+            color: white;
+            font-size: 1.7rem;
+            font-weight: 900;
+            margin-bottom: 18px;
+        }
+
+        .external-link-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        /* Password Modal */
+        .password-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .password-card {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            padding: 40px;
+            width: 400px;
+            max-width: 90%;
+            text-align: center;
+            box-shadow: var(--shadow-xl);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .password-card i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .password-card h2 {
+            margin-bottom: 20px;
+            color: var(--primary-dark);
+        }
+
+        .password-card input {
+            margin-bottom: 20px;
+        }
+
+        .error-msg {
+            color: var(--danger);
+            margin-top: 10px;
+            font-size: 0.8rem;
+        }
+
+        /* Floating Chatbot */
+        .floating-chatbot {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+            cursor: pointer;
+        }
+
+        .chatbot-toggle {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 25px rgba(10, 61, 98, 0.3);
+            transition: var(--transition);
+            animation: pulse 2s infinite;
+        }
+
+        .chatbot-toggle i {
+            font-size: 32px;
+            color: white;
+        }
+
+        .chatbot-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(30, 90, 136, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(30, 90, 136, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(30, 90, 136, 0); }
+        }
+
+        .chatbot-modal {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 380px;
+            height: 500px;
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
+            z-index: 1001;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            animation: slideUp 0.3s ease;
+        }
+
+        .chatbot-modal.show {
+            display: flex;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .chatbot-header {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: white;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chatbot-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .chatbot-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            background: var(--gray-50);
+        }
+
+        .chatbot-footer {
+            padding: 16px;
+            background: white;
+            border-top: 1px solid var(--gray-200);
+            display: flex;
+            gap: 10px;
+        }
+
+        .chatbot-footer input {
+            flex: 1;
+            margin: 0;
+        }
+
+        .chatbot-footer button {
+            padding: 10px 20px;
+        }
+
+        .chatbot-message {
+            margin-bottom: 12px;
+            display: flex;
+        }
+
+        .chatbot-message.user { justify-content: flex-end; }
+        .chatbot-message.bot { justify-content: flex-start; }
+
+        .message-bubble {
+            max-width: 80%;
+            padding: 10px 14px;
+            border-radius: 18px;
+            font-size: 0.85rem;
+        }
+
+        .chatbot-message.user .message-bubble {
+            background: var(--primary-dark);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .chatbot-message.bot .message-bubble {
+            background: var(--white);
+            color: var(--gray-800);
+            border-bottom-left-radius: 4px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                margin-left: 0;
+                padding: 24px 20px;
+            }
+            .top-navbar {
+                padding: 16px 20px;
+                border-radius: 32px;
+                gap: 14px;
+                flex-wrap: wrap;
+            }
+            .top-navbar > div {
+                width: 100%;
+            }
+            .top-navbar > div:first-child {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                flex-wrap: wrap;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                position: fixed;
+                width: min(320px, 100%);
+                height: 100vh;
+            }
+            .sidebar.show { transform: translateX(0); }
+            .sidebar-close { display: block; }
+            .mobile-menu-btn { display: inline-flex; }
+            .main-content {
+                margin-left: 0;
+                padding: 20px 16px;
+            }
+            .hero-section {
+                padding: 40px 22px;
+                border-radius: 24px;
+            }
+            .grid-2, .grid-3, .grid-4 {
+                grid-template-columns: 1fr;
+                gap: 18px;
+            }
+            .card {
+                padding: 22px;
+                border-radius: 24px;
+            }
+            .footer-links,
+            .footer-social {
+                justify-content: center;
+                gap: 12px;
+            }
+            .footer-links a,
+            .footer-social a {
+                width: auto;
+            }
+            .chatbot-modal {
+                width: calc(100% - 32px);
+                right: 16px;
+                left: 16px;
+            }
+        }
+
+        .mt-2 { margin-top: 8px; }
+        .mt-4 { margin-top: 16px; }
+        .text-center { text-align: center; }
+        .text-primary { color: var(--primary); }
+    </style>
+</head>
+<body>
+<div class="app-wrapper" id="appWrapper">
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h1 class="logo-text"><i class="fas fa-building-columns"></i> Bakorwil Digital</h1>
+            <p class="logo-sub">Smart Governance Platform | Bojonegoro</p>
+            <button class="sidebar-close" id="sidebarCloseBtn"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="nav-menu" id="navMenuContainer"></div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+        <div class="top-navbar">
+            <div>
+                <button class="mobile-menu-btn" id="mobileMenuBtn"><i class="fas fa-bars"></i></button>
+                <i class="fas fa-shield-alt"></i> <span id="roleLabel">Masyarakat</span>
+            </div>
+            <div><button class="btn-role-switch" id="switchRoleBtn"><i class="fas fa-exchange-alt"></i> Login Admin</button></div>
+        </div>
+        <div id="dynamicContent"></div>
+        <footer>
+            <div class="footer-links">
+                <a href="#" onclick="openExternalLink('https://bakorwilmadiun.jatimprov.go.id/', '_blank'); return false;"><i class="fas fa-map-marker-alt"></i> Bakorwil I Madiun</a>
+                <a href="#" onclick="openExternalLink('https://bakorwilmalang.jatimprov.go.id/', '_blank'); return false;"><i class="fas fa-map-marker-alt"></i> Bakorwil II Malang</a>
+                <a href="#" onclick="openExternalLink('https://bakorwilpamekasan.jatimprov.go.id/', '_blank'); return false;"><i class="fas fa-map-marker-alt"></i> Bakorwil IV Pamekasan</a>
+                <a href="#" onclick="openExternalLink('https://bakorwiljember.jatimprov.go.id/', '_blank'); return false;"><i class="fas fa-map-marker-alt"></i> Bakorwil V Jember</a>
+            </div>
+            <div class="footer-social">
+                <a href="#" onclick="openExternalLink('https://www.youtube.com/@bakorwilbojonegoro7579', '_blank'); return false;"><i class="fab fa-youtube"></i> YouTube</a>
+                <a href="#" onclick="openExternalLink('https://www.instagram.com/bakorwil_bojonegoro/', '_blank'); return false;"><i class="fab fa-instagram"></i> Instagram</a>
+                <a href="#" onclick="openExternalLink('https://x.com/2Bakorwil', '_blank'); return false;"><i class="fab fa-x-twitter"></i> X</a>
+                <a href="#" onclick="openExternalLink('https://www.facebook.com/bakorwil.bojonegoro/', '_blank'); return false;"><i class="fab fa-facebook-f"></i> Facebook</a>
+            </div>
+            <div class="footer-copyright">
+                <p>© 2025 Bakorwil II Bojonegoro - Digital Governance Platform | Integrasi Layanan Publik Terpadu</p>
+                <p class="mt-2"><i class="fas fa-envelope"></i> <a href="https://mail.google.com/mail/?view=cm&fs=1&to=bakorwil2@jatimprov.go.id" target="_blank" rel="noopener noreferrer">bakorwil2@jatimprov.go.id</a> | <i class="fas fa-phone"></i> <a href="tel:+623535254758" target="_self" rel="noopener noreferrer">(0353) 5254758</a>, <a href="tel:+62881901" target="_self" rel="noopener noreferrer">881901</a></p>
+            </div>
+        </footer>
+    </div>
+</div>
+
+<!-- FLOATING CHATBOT BUTTON -->
+<div class="floating-chatbot" id="floatingChatbot">
+    <div class="chatbot-toggle" id="chatbotToggle">
+        <i class="fas fa-comment-dots"></i>
+    </div>
+</div>
+
+<!-- CHATBOT MODAL -->
+<div class="chatbot-modal" id="chatbotModal">
+    <div class="chatbot-header">
+        <h4><i class="fas fa-robot"></i> AI Chatbot Bakorwil</h4>
+        <button class="chatbot-close" id="chatbotClose">&times;</button>
+    </div>
+    <div class="chatbot-body" id="chatbotBody">
+        <div class="chatbot-message bot">
+            <div class="message-bubble">
+                <i class="fas fa-robot"></i> Halo! Saya asisten virtual Bakorwil Bojonegoro.
+            </div>
+        </div>
+    </div>
+    <div class="chatbot-footer">
+        <input type="text" id="chatbotInput" placeholder="Tanyakan sesuatu...">
+        <button id="chatbotSend"><i class="fas fa-paper-plane"></i></button>
+    </div>
+</div>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    // ============================================
+    // KONFIGURASI - PASSWORD ADMIN
+    // ============================================
+    const ADMIN_PASSWORD = "bakorwil123";
+    let isAdminAuthenticated = false;
+    let currentRole = "public";
+    let currentActive = "beranda";
+    
+    // Data gambar peta - menggunakan file lokal image.png
+    let currentMapImageSrc = "image.png";
+    
+    // Mapping link wilayah
+    const wilayahLinks = {
+        "Bojonegoro": "https://bakorwilbojonegoro.jatimprov.go.id/",
+        "Tuban": "https://tubankab.go.id/home",
+        "Lamongan": "https://lamongankab.go.id/",
+        "Gresik": "https://gresikkab.go.id/",
+        "Nganjuk": "https://www.nganjukkab.go.id/",
+        "Jombang": "https://www.jombangkab.go.id/",
+        "Mojokerto": "https://mojokertokab.go.id/",
+        "Kota Mojokerto": "https://web.mojokertokota.go.id/"
+    };
+
+    // Fungsi untuk membuka link wilayah
+    function openWilayahLink(wilayah) {
+        const url = wilayahLinks[wilayah];
+        if (url) {
+            window.open(url, "_blank");
+        } else {
+            alert(`Link untuk ${wilayah} belum tersedia.`);
+        }
+    }
+
+    // Fungsi untuk membuka link eksternal umum
+    function openExternalLink(url, target = "_blank") {
+        if (url && url.trim() !== "") {
+            window.open(url, target);
+        } else {
+            alert("Maaf, link tujuan tidak tersedia.");
+        }
+    }
+
+    // Render Sidebar
+    function renderSidebarNav() {
+        const container = document.getElementById("navMenuContainer");
+        if (!container) return;
+        container.innerHTML = "";
+        const menuData = [
+            { id: "beranda", icon: "fas fa-home", label: "Beranda", isExternal: false },
+            { id: "dashboard_wilayah", icon: "fas fa-chart-line", label: "Dashboard Wilayah", isExternal: false },
+            { id: "surat_digital", icon: "fas fa-file-signature", label: "Sistem Surat Digital", isExternal: false },
+            { id: "pengaduan", icon: "fas fa-comment-dots", label: "Pengaduan Masyarakat", isExternal: false },
+            { id: "booking", icon: "fas fa-calendar-check", label: "Booking Fasilitas", isExternal: false },
+            { id: "statistik", icon: "fas fa-chart-pie", label: "Statistik Pembangunan", isExternal: false },
+            { id: "gis", icon: "fas fa-map", label: "GIS / Peta Wilayah", isExternal: false },
+            { id: "profil", icon: "fas fa-building", label: "Profil Lembaga", isExternal: false },
+            { id: "berita", icon: "fas fa-newspaper", label: "Berita", isExternal: false },
+            { id: "berita_jatim", icon: "fas fa-globe", label: "Berita Jatim", isExternal: false },
+            { id: "info_ejsc", icon: "fas fa-graduation-cap", label: "Info EJSC", isExternal: false },
+            { id: "ppid", icon: "fas fa-folder-open", label: "PPID", isExternal: false },
+            { id: "kegiatan", icon: "fas fa-calendar-alt", label: "Kegiatan", isExternal: false },
+            { id: "layanan_dokumen", icon: "fas fa-file-alt", label: "Layanan (SK & Standar)", isExternal: false },
+            { id: "skm", icon: "fas fa-star", label: "SKM", isExternal: false },
+            { id: "sakip_rb", icon: "fas fa-chart-line", label: "SAKIP-RB", isExternal: false },
+            { id: "inovasi", icon: "fas fa-lightbulb", label: "INOVASI", isExternal: false },
+            { id: "lapor", icon: "fas fa-bullhorn", label: "Lapor", isExternal: true, externalUrl: "https://jatim.lapor.go.id" },
+            { id: "video", icon: "fab fa-youtube", label: "Video", isExternal: true, externalUrl: "https://www.youtube.com/@bakorwilbojonegoro7579" },
+            { id: "foto", icon: "fab fa-instagram", label: "Foto", isExternal: true, externalUrl: "https://www.instagram.com/bakorwil_bojonegoro/" }
+        ];
+        
+        menuData.forEach(menu => {
+            const navDiv = document.createElement("div");
+            navDiv.className = `nav-item ${currentActive === menu.id ? "active" : ""}`;
+            navDiv.innerHTML = `<i class="${menu.icon}"></i><span>${menu.label}</span>`;
+            navDiv.onclick = () => {
+                if (menu.isExternal && menu.externalUrl) {
+                    openExternalLink(menu.externalUrl, "_blank");
+                    return;
+                }
+                currentActive = menu.id;
+                renderSidebarNav();
+                loadMainContent();
+                closeMobileSidebar();
+            };
+            container.appendChild(navDiv);
+        });
+    }
+
+    function toggleMobileSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        if (!sidebar) return;
+        sidebar.classList.toggle('show');
+    }
+
+    function closeMobileSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        if (!sidebar) return;
+        if (window.innerWidth <= 768) {
+            sidebar.classList.remove('show');
+        }
+    }
+
+    function updateRoleDisplay() {
+        const roleSpan = document.getElementById("roleLabel");
+        const switchBtn = document.getElementById("switchRoleBtn");
+        if (currentRole === "admin" && isAdminAuthenticated) {
+            roleSpan.innerHTML = '<i class="fas fa-crown"></i> Administrator (Akses Penuh)';
+            switchBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout Admin';
+        } else {
+            roleSpan.innerHTML = '<i class="fas fa-user"></i> Masyarakat (Akses Terbatas)';
+            switchBtn.innerHTML = '<i class="fas fa-key"></i> Login Admin';
+        }
+    }
+
+    // ============================================
+    // PASSWORD MODAL UNTUK ADMIN
+    // ============================================
+    function showPasswordModal() {
+        const modal = document.createElement('div');
+        modal.className = 'password-modal';
+        modal.id = 'passwordModal';
+        modal.innerHTML = `
+            <div class="password-card">
+                <i class="fas fa-lock"></i>
+                <h2>Akses Administrator</h2>
+                <p>Masukkan password untuk mengakses menu administrator</p>
+                <input type="password" id="adminPassword" placeholder="Masukkan password" autocomplete="off">
+                <button id="submitPassword">Verifikasi</button>
+                <button id="cancelPassword" style="background: var(--gray-500); margin-left: 10px;">Batal</button>
+                <div id="passwordError" class="error-msg"></div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        
+        document.getElementById('submitPassword').onclick = () => {
+            const password = document.getElementById('adminPassword').value;
+            if (password === ADMIN_PASSWORD) {
+                isAdminAuthenticated = true;
+                currentRole = "admin";
+                updateRoleDisplay();
+                document.body.removeChild(modal);
+                alert("Login berhasil! Anda sekarang memiliki akses Administrator penuh.");
+                loadMainContent();
+                renderSidebarNav();
+            } else {
+                document.getElementById('passwordError').innerText = "Password salah! Akses ditolak.";
+            }
+        };
+        
+        document.getElementById('cancelPassword').onclick = () => {
+            document.body.removeChild(modal);
+        };
+        
+        document.getElementById('adminPassword').onkeypress = (e) => {
+            if (e.key === 'Enter') document.getElementById('submitPassword').click();
+        };
+    }
+    
+    function logoutAdmin() {
+        isAdminAuthenticated = false;
+        currentRole = "public";
+        updateRoleDisplay();
+        alert("Anda telah logout dari mode Administrator.");
+        loadMainContent();
+        renderSidebarNav();
+    }
+
+    // ============================================
+    // RENDER BERANDA DENGAN WILAYAH LINK
+    // ============================================
+    function renderBeranda() {
+        return `
+            <div class="hero-section" data-aos="fade-up">
+                <h1><i class="fas fa-building-columns"></i> Bakorwil II Bojonegoro</h1>
+                <p>Koordinasi Pembangunan Wilayah menuju pelayanan publik digital yang modern, transparan, dan akuntabel.</p>
+                <div class="wilayah-tags">
+                    <span class="wilayah-tag" onclick="openWilayahLink('Bojonegoro')"><i class="fas fa-map-marker-alt"></i> Bojonegoro</span>
+                    <span class="wilayah-tag" onclick="openWilayahLink('Tuban')"><i class="fas fa-map-marker-alt"></i> Tuban</span>
+                    <span class="wilayah-tag" onclick="openWilayahLink('Lamongan')"><i class="fas fa-map-marker-alt"></i> Lamongan</span>
+                    <span class="wilayah-tag" onclick="openWilayahLink('Gresik')"><i class="fas fa-map-marker-alt"></i> Gresik</span>
+                    <span class="wilayah-tag" onclick="openWilayahLink('Nganjuk')"><i class="fas fa-map-marker-alt"></i> Nganjuk</span>
+                    <span class="wilayah-tag" onclick="openWilayahLink('Kota Mojokerto')"><i class="fas fa-map-marker-alt"></i> Kota Mojokerto</span>
+                    <span class="wilayah-tag" onclick="openWilayahLink('Jombang')"><i class="fas fa-map-marker-alt"></i> Jombang</span>
+                    <span class="wilayah-tag" onclick="openWilayahLink('Mojokerto')"><i class="fas fa-map-marker-alt"></i> Mojokerto</span>
+                </div>
+                <div class="hero-stats">
+                    <div class="hero-stat"><div class="number">8</div><div class="label">Kabupaten/Kota</div></div>
+                    <div class="hero-stat"><div class="number">4.2M</div><div class="label">Penduduk</div></div>
+                    <div class="hero-stat"><div class="number">96.8%</div><div class="label">Kepuasan Layanan</div></div>
+                </div>
+            </div>
+            <div class="grid-4">
+                <div class="stat-card" onclick="currentActive='surat_digital'; renderSidebarNav(); loadMainContent();">
+                    <div class="stat-icon"><i class="fas fa-file-signature"></i></div>
+                    <h3>Pengajuan Surat</h3>
+                    <p>Ajukan surat digital online</p>
+                </div>
+                <div class="stat-card" onclick="currentActive='pengaduan'; renderSidebarNav(); loadMainContent();">
+                    <div class="stat-icon"><i class="fas fa-comment-dots"></i></div>
+                    <h3>Lapor Pengaduan</h3>
+                    <p>Sampaikan aspirasi Anda</p>
+                </div>
+                <div class="stat-card" onclick="currentActive='booking'; renderSidebarNav(); loadMainContent();">
+                    <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
+                    <h3>Booking Gedung EJSC</h3>
+                    <p>Pesan ruang rapat & aula</p>
+                </div>
+                <div class="stat-card" onclick="currentActive='gis'; renderSidebarNav(); loadMainContent();">
+                    <div class="stat-icon"><i class="fas fa-map"></i></div>
+                    <h3>GIS Interaktif</h3>
+                    <p>Lihat peta wilayah</p>
+                </div>
+            </div>
+            <div class="grid-3">
+                <div class="stat-card external-link-card" onclick="openExternalLink('https://jatim.lapor.go.id', '_blank')">
+                    <i class="fas fa-bullhorn" style="font-size: 2rem; color: var(--primary);"></i>
+                    <h3 class="mt-2">Lapor</h3>
+                    <p>Sampaikan aspirasi melalui Lapor Jatim</p>
+                </div>
+                <div class="stat-card external-link-card" onclick="openExternalLink('https://www.youtube.com/@bakorwilbojonegoro7579', '_blank')">
+                    <i class="fab fa-youtube" style="font-size: 2rem; color: #ff0000;"></i>
+                    <h3 class="mt-2">Video</h3>
+                    <p>Kanal YouTube resmi Bakorwil II Bojonegoro</p>
+                </div>
+                <div class="stat-card external-link-card" onclick="openExternalLink('https://www.instagram.com/bakorwil_bojonegoro/', '_blank')">
+                    <i class="fab fa-instagram" style="font-size: 2rem; color: #e4405f;"></i>
+                    <h3 class="mt-2">Foto</h3>
+                    <p>Dokumentasi di Instagram resmi Bakorwil II Bojonegoro</p>
+                </div>
+                <div class="stat-card external-link-card" onclick="openExternalLink('https://www.facebook.com/bakorwil.bojonegoro/', '_blank')">
+                    <i class="fab fa-facebook-f" style="font-size: 2rem; color: #1877f2;"></i>
+                    <h3 class="mt-2">Facebook</h3>
+                    <p>Kunjungi Facebook resmi Bakorwil II Bojonegoro</p>
+                </div>
+                <div class="stat-card external-link-card" onclick="openExternalLink('https://x.com/2Bakorwil', '_blank')">
+                    <div class="x-logo">X</div>
+                    <h3 class="mt-2">X</h3>
+                    <p>Ikuti update terbaru di akun X resmi Bakorwil II Bojonegoro</p>
+                </div>
+            </div>
+        `;
+    }
+
+    // ============================================
+    // GIS DENGAN GAMBAR image.png
+    // ============================================
+    function renderGIS() {
+        return `
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-map"></i> GIS / Peta Wilayah Bakorwil II</h2>
+                <div id="mapContainer" class="map-container">
+                    <img src="${currentMapImageSrc}" alt="Peta Wilayah Bakorwil" class="map-image" id="mapImageDisplay" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\\'map-placeholder\\'><i class=\\'fas fa-map-marked-alt\\'></i><p>Gambar tidak dapat dimuat. Pastikan file <strong>image.png</strong> tersedia di folder yang sama dengan file HTML.</p></div>';">
+                </div>
+                <p class="mt-2"><i class="fas fa-location-dot"></i> Wilayah kerja Bakorwil II: Bojonegoro, Tuban, Lamongan, Gresik, Nganjuk, Kota Mojokerto, Jombang, Mojokerto</p>
+            </div>
+        `;
+    }
+
+    // ============================================
+    // KONTEN MENU LAINNYA
+    // ============================================
+    function renderDashboardWilayah() {
+        return `
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-chart-line"></i> Dashboard Wilayah Bakorwil II</h2>
+                <div class="grid-2">
+                    <div class="stat-card"><h3>IPM 2025</h3><div class="stat-value">74.8</div><p>Meningkat 1.2 poin</p></div>
+                    <div class="stat-card"><h3>Pertumbuhan Ekonomi</h3><div class="stat-value">5.9%</div><p>YoY</p></div>
+                    <div class="stat-card"><h3>Angka Kemiskinan</h3><div class="stat-value">9.1%</div><p>Turun 0.3%</p></div>
+                    <div class="stat-card"><h3>Serapan Tenaga Kerja</h3><div class="stat-value">12,450</div><p>Orang</p></div>
+                </div>
+                <canvas id="statChart" height="150"></canvas>
+            </div>
+            <script>
+                setTimeout(() => {
+                    const ctx = document.getElementById('statChart')?.getContext('2d');
+                    if(ctx && !window.chartInitialized) {
+                        window.chartInitialized = true;
+                        new Chart(ctx, {
+                            type: 'bar',
+                            data: { labels: ['2021','2022','2023','2024','2025'], datasets: [{ label: 'IPM', data: [70.2,71.5,72.8,73.9,74.8], backgroundColor: '#1e5a88', borderRadius: 8 }] },
+                            options: { responsive: true, maintainAspectRatio: true }
+                        });
+                    }
+                }, 100);
+            <\/script>
+        `;
+    }
+
+    function renderSuratDigital() {
+        return `
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-file-signature"></i> Sistem Surat Digital Terpadu</h2>
+                <form onsubmit="event.preventDefault(); alert('Pengajuan surat berhasil dikirim!'); this.reset();">
+                    <div style="margin-bottom:16px"><label>Jenis Surat</label><select required><option>Surat Keterangan Domisili</option><option>Surat Keterangan Usaha</option><option>Rekomendasi Izin</option></select></div>
+                    <div style="margin-bottom:16px"><input type="text" placeholder="Nama Lengkap" required></div>
+                    <div style="margin-bottom:16px"><input type="text" placeholder="NIK" required></div>
+                    <div style="margin-bottom:16px"><textarea rows="3" placeholder="Alamat Lengkap" required></textarea></div>
+                    <button type="submit"><i class="fas fa-paper-plane"></i> Ajukan Surat</button>
+                </form>
+                <p class="mt-2"><i class="fas fa-clock"></i> Proses maksimal 2 hari kerja</p>
+            </div>
+        `;
+    }
+
+    function renderPengaduan() {
+        return `
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-comment-dots"></i> Pengaduan Masyarakat</h2>
+                <form onsubmit="event.preventDefault(); alert('Terima kasih, aduan Anda telah diterima.'); this.reset();">
+                    <div style="margin-bottom:16px"><input type="text" placeholder="Nama Pelapor" required></div>
+                    <div style="margin-bottom:16px"><input type="email" placeholder="Email"></div>
+                    <div style="margin-bottom:16px"><textarea rows="4" placeholder="Tulis aduan atau keluhan Anda..." required></textarea></div>
+                    <button type="submit"><i class="fas fa-paper-plane"></i> Kirim Pengaduan</button>
+                </form>
+            </div>
+        `;
+    }
+
+    function renderBooking() {
+        return `
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-calendar-check"></i> Booking Fasilitas & Gedung EJSC</h2>
+                <div class="grid-2">
+                    <div><select><option>Ruang Rapat Utama (kapasitas 100 org)</option><option>Aula Serbaguna (kapasitas 250 org)</option><option>Ruang Kelas EJSC (kapasitas 40 org)</option></select></div>
+                    <div><input type="date"></div>
+                    <div><input type="text" placeholder="Nama Instansi/Pemohon"></div>
+                    <div><button onclick="alert('Booking berhasil!')"><i class="fas fa-bookmark"></i> Booking</button></div>
+                </div>
+            </div>
+        `;
+    }
+
+    function renderStatistik() {
+        return `<div class="card"><h2 class="card-title"><i class="fas fa-chart-pie"></i> Statistik Pembangunan</h2>
+        <ul style="line-height:2"><li><i class="fas fa-road"></i> Jalan Mantap: 87 km</li><li><i class="fas fa-water"></i> Irigasi: 45 km</li><li><i class="fas fa-school"></i> Rehabilitasi Sekolah: 23 unit</li></ul></div>`;
+    }
+
+    function renderProfilLengkap() {
+        return `<div class="card"><h2 class="card-title"><i class="fas fa-building"></i> Profil Lembaga Bakorwil II</h2>
+        <div><strong>Tentang Kami:</strong><p>Bakorwil II Bojonegoro adalah perangkat daerah provinsi</p>
+        <strong>Tugas dan Fungsi:</strong><p>Koordinasi perencanaan, pengendalian, evaluasi pembangunan</p>
+        <strong>Alamat:</strong><p>Jl. Raya Padangan No.88, Bojonegoro</p>
+        <strong>Visi dan Misi:</strong><p>Visi: Koordinasi pembangunan berkelanjutan berbasis digital</p>
+        <strong>Wilayah Kerja:</strong><p>Bojonegoro, Tuban, Lamongan, Gresik, Nganjuk, Mojokerto, Jombang</p>
+        </div></div>`;
+    }
+
+    function renderBeritaUmum() { 
+        return `<div class="card"><h2 class="card-title"><i class="fas fa-newspaper"></i> Berita Bakorwil</h2>
+        <ul><li>📢 Bupati resmikan layanan surat digital</li><li>🏆 Bakorwil raih predikat WBK 2025</li></ul></div>`; 
+    }
+    
+    function renderBeritaJatim() { 
+        return `<div class="card"><h2 class="card-title"><i class="fas fa-globe"></i> Berita Jatim</h2>
+        <ul><li>🌏 Gubernur launching Jatim Super App</li><li>💰 Investasi asing Rp 45 triliun</li></ul></div>`; 
+    }
+    
+    function renderInfoEJSC() { 
+        return `<div class="card"><h2 class="card-title"><i class="fas fa-graduation-cap"></i> Info EJSC</h2>
+        <p>Pelatihan Digital Marketing, Data Analyst, Web Developer. Pendaftaran hingga 31 Desember 2025.</p>
+        <button onclick="alert('Pendaftaran EJSC: ejsc.jatimprov.go.id')">Daftar</button></div>`; 
+    }
+    
+    function renderPPID() { 
+        return `<div class="card"><h2 class="card-title"><i class="fas fa-folder-open"></i> PPID</h2>
+        <p>Layanan informasi publik. Jadwal: Senin-Jum'at 08.00-15.00</p>
+        <button onclick="alert('Formulir permohonan informasi')">Unduh Formulir</button></div>`; 
+    }
+    
+    function renderKegiatan() { 
+        return `<div class="card"><h2 class="card-title"><i class="fas fa-calendar-alt"></i> Kegiatan</h2>
+        <ul><li>📌 15 Nov: Rakor Pembangunan Wilayah</li><li>📌 20 Nov: Pelatihan GIS</li></ul></div>`; 
+    }
+    
+    function renderLayananDokumen() { 
+        return `<div class="card"><h2 class="card-title"><i class="fas fa-file-alt"></i> Layanan & Dokumen</h2>
+        <p><strong>SK Standar Pelayanan:</strong> SK No. 45/2025</p>
+        <p><strong>Maklumat Pelayanan:</strong> Janji kinerja pelayanan prima</p>
+        <p><strong>Peminjaman Ruang EJSC:</strong> Form peminjaman</p>
+        <button onclick="alert('Unduh dokumen')">Unduh</button></div>`; 
+    }
+    
+    function renderSKM() { 
+        return `<div class="card"><h2 class="card-title"><i class="fas fa-star"></i> SKM</h2>
+        <p>Indeks SKM Q3 2025: 86,4 (Sangat Baik)</p>
+        <button onclick="alert('Terima kasih')">Isi Survei</button></div>`; 
+    }
+    
+    function renderSAKIP() { 
+        return `<div class="card"><h2 class="card-title"><i class="fas fa-chart-line"></i> SAKIP-RB</h2>
+        <p>Sistem Akuntabilitas Kinerja Instansi Pemerintah dan Reformasi Birokrasi</p>
+        <select id="tahunSakip" style="width:auto;margin:16px 0;padding:10px 20px"><option>2021</option><option>2022</option><option>2023</option><option>2024</option><option selected>2025</option><option>2026</option></select>
+        <button onclick="alert('Laporan SAKIP-RB tahun '+document.getElementById('tahunSakip').value)"><i class="fas fa-chart-line"></i> Lihat Laporan</button>
+        </div>`; 
+    }
+    
+    function renderInovasi() { 
+        return `<div class="card"><h2 class="card-title"><i class="fas fa-lightbulb"></i> INOVASI</h2>
+        <ul><li><strong>PASAR MERDEKA</strong> - Digitalisasi pasar</li><li><strong>GREBANG RATUBANGNEGORO</strong> - Pelayanan terpadu</li>
+        <li><strong>MONEV SINERGI</strong> - Monitoring evaluasi</li><li><strong>SAPA AKSARA</strong> - Literasi ASN</li>
+        <li><strong>Layanan Dinas Sosial Prov. Jatim</strong></li></ul></div>`; 
+    }
+
+    function loadMainContent() {
+        const container = document.getElementById("dynamicContent");
+        if (!container) return;
+        let content = "";
+        
+        switch(currentActive) {
+            case "beranda": content = renderBeranda(); break;
+            case "dashboard_wilayah": content = renderDashboardWilayah(); break;
+            case "surat_digital": content = renderSuratDigital(); break;
+            case "pengaduan": content = renderPengaduan(); break;
+            case "booking": content = renderBooking(); break;
+            case "statistik": content = renderStatistik(); break;
+            case "gis": content = renderGIS(); break;
+            case "profil": content = renderProfilLengkap(); break;
+            case "berita": content = renderBeritaUmum(); break;
+            case "berita_jatim": content = renderBeritaJatim(); break;
+            case "info_ejsc": content = renderInfoEJSC(); break;
+            case "ppid": content = renderPPID(); break;
+            case "kegiatan": content = renderKegiatan(); break;
+            case "layanan_dokumen": content = renderLayananDokumen(); break;
+            case "skm": content = renderSKM(); break;
+            case "sakip_rb": content = renderSAKIP(); break;
+            case "inovasi": content = renderInovasi(); break;
+            default: content = `<div class="card"><h2>Menu ${currentActive}</h2></div>`;
+        }
+        container.innerHTML = content;
+        if (typeof AOS !== 'undefined') AOS.refresh();
+    }
+
+    // ============================================
+    // CHATBOT FUNCTIONS
+    // ============================================
+    function initChatbot() {
+        const toggleBtn = document.getElementById('chatbotToggle');
+        const modal = document.getElementById('chatbotModal');
+        const closeBtn = document.getElementById('chatbotClose');
+        const sendBtn = document.getElementById('chatbotSend');
+        const input = document.getElementById('chatbotInput');
+        const body = document.getElementById('chatbotBody');
+
+        toggleBtn.onclick = () => modal.classList.toggle('show');
+        closeBtn.onclick = () => modal.classList.remove('show');
+
+        function addMessage(text, isUser) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `chatbot-message ${isUser ? 'user' : 'bot'}`;
+            msgDiv.innerHTML = `<div class="message-bubble">${isUser ? '<i class="fas fa-user"></i> ' : '<i class="fas fa-robot"></i> '}${text}</div>`;
+            body.appendChild(msgDiv);
+            body.scrollTop = body.scrollHeight;
+        }
+
+        function getBotReply(q) {
+            const question = q.toLowerCase();
+            if (question.includes('surat')) return 'Untuk surat digital, buka menu "Sistem Surat Digital". Proses cepat! 📄';
+            if (question.includes('pengaduan')) return 'Pengaduan bisa disampaikan di menu "Pengaduan Masyarakat". Akan ditindaklanjuti 3x24 jam.';
+            if (question.includes('booking')) return 'Booking fasilitas gedung EJSC melalui menu "Booking Fasilitas". Tersedia ruang rapat dan aula.';
+            if (question.includes('peta') || question.includes('gis')) return 'Lihat peta interaktif di menu "GIS / Peta Wilayah". Gunakan file image.png di folder yang sama.';
+            if (question.includes('profil')) return 'Informasi profil Bakorwil ada di menu "Profil Lembaga".';
+            if (question.includes('bojonegoro') || question.includes('tuban') || question.includes('lamongan')) return 'Klik nama wilayah di halaman beranda untuk mengakses website resmi masing-masing kabupaten/kota.';
+            return 'Terima kasih! Silakan coba tanyakan tentang: Surat Digital, Pengaduan, Booking, GIS/Peta, atau Profil Lembaga.';
+        }
+
+        sendBtn.onclick = () => {
+            const msg = input.value.trim();
+            if (!msg) return;
+            addMessage(msg, true);
+            setTimeout(() => addMessage(getBotReply(msg), false), 300);
+            input.value = '';
+        };
+        input.onkeypress = (e) => { if (e.key === 'Enter') sendBtn.click(); };
+    }
+
+    // ============================================
+    // SWITCH ROLE HANDLER
+    // ============================================
+    document.getElementById("switchRoleBtn")?.addEventListener("click", () => {
+        if (currentRole === "admin" && isAdminAuthenticated) {
+            logoutAdmin();
+        } else {
+            showPasswordModal();
+        }
+    });
+
+    // Expose function ke global
+    window.openExternalLink = openExternalLink;
+    window.openWilayahLink = openWilayahLink;
+
+    function initApp() {
+        renderSidebarNav();
+        updateRoleDisplay();
+        loadMainContent();
+        initChatbot();
+
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const sidebarCloseBtn = document.getElementById('sidebarCloseBtn');
+        const sidebar = document.getElementById('sidebar');
+
+        mobileMenuBtn?.addEventListener('click', toggleMobileSidebar);
+        sidebarCloseBtn?.addEventListener('click', closeMobileSidebar);
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768 && sidebar) {
+                sidebar.classList.remove('show');
+            }
+        });
+
+        AOS.init({ duration: 600, once: true });
+    }
+    initApp();
+</script>
+</body>
+</html>
